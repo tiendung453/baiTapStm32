@@ -1,0 +1,23 @@
+--cpu Cortex-M3
+"blynk_2led_in_2freq\startup_stm32f103xb.o"
+"blynk_2led_in_2freq\main.o"
+"blynk_2led_in_2freq\stm32f1xx_it.o"
+"blynk_2led_in_2freq\stm32f1xx_hal_msp.o"
+"blynk_2led_in_2freq\stm32f1xx_hal_gpio_ex.o"
+"blynk_2led_in_2freq\stm32f1xx_hal_tim.o"
+"blynk_2led_in_2freq\stm32f1xx_hal_tim_ex.o"
+"blynk_2led_in_2freq\stm32f1xx_hal.o"
+"blynk_2led_in_2freq\stm32f1xx_hal_rcc.o"
+"blynk_2led_in_2freq\stm32f1xx_hal_rcc_ex.o"
+"blynk_2led_in_2freq\stm32f1xx_hal_gpio.o"
+"blynk_2led_in_2freq\stm32f1xx_hal_dma.o"
+"blynk_2led_in_2freq\stm32f1xx_hal_cortex.o"
+"blynk_2led_in_2freq\stm32f1xx_hal_pwr.o"
+"blynk_2led_in_2freq\stm32f1xx_hal_flash.o"
+"blynk_2led_in_2freq\stm32f1xx_hal_flash_ex.o"
+"blynk_2led_in_2freq\stm32f1xx_hal_exti.o"
+"blynk_2led_in_2freq\system_stm32f1xx.o"
+--strict --scatter "blynk_2led_in_2freq\blynk_2led_in_2freq.sct"
+--summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
+--info sizes --info totals --info unused --info veneers
+--list "blynk_2led_in_2freq.map" -o blynk_2led_in_2freq\blynk_2led_in_2freq.axf
