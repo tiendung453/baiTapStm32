@@ -54,6 +54,110 @@ static void MX_GPIO_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+uint8_t btn_current = 1;
+uint8_t btn_last = 1;
+uint8_t btn_filter = 1;
+uint8_t is_debouncing = 0;
+uint32_t time_debounce;
+uint32_t time_current1;
+uint32_t time_current2;
+
+uint8_t test;
+uint8_t count = 0;
+
+typedef enum
+{
+	LED_OFF,
+	LED1_BLINK_1HZ,
+	LED2_BLINK_5HZ,
+}LedStatus;
+
+LedStatus led_status;
+
+void btn_pressing_callback()
+{
+	switch(led_status)
+	{
+		case LED_OFF:
+			led_status = LED1_BLINK_1HZ;
+		break;
+		
+		case LED1_BLINK_1HZ:
+			led_status = LED2_BLINK_5HZ;
+		break;
+		
+		case LED2_BLINK_5HZ:
+			led_status = LED_OFF;
+		break;
+			
+	}
+}
+
+void button_handle()
+{
+	uint8_t sta = HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_0);
+	if(sta != btn_filter)
+	{
+		btn_filter = sta;
+		is_debouncing = 1;
+		time_debounce = HAL_GetTick();
+	}
+	if(is_debouncing && (HAL_GetTick()-time_debounce >= 15))
+	{
+		btn_current = btn_filter;
+		is_debouncing = 0;
+	}
+	// ----------- xu li-----------
+	if(btn_current != btn_last)
+	{
+		if(btn_current == 0)
+		{
+			btn_pressing_callback();
+		}
+		btn_last = btn_current;
+	}
+}
+// ------ xu li led-------
+void ledOff()
+{
+	HAL_GPIO_WritePin(GPIOC, GPIO_PIN_13, 1);
+	HAL_GPIO_WritePin(GPIOC, GPIO_PIN_14, 0);
+}
+
+void led1Blynk()
+{
+		if(HAL_GetTick() - time_current1 >= 500)
+		{
+			HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_13);
+			time_current1 = HAL_GetTick();
+		}
+}
+
+void led2Blynk()
+{
+		if(HAL_GetTick() - time_current2 >= 100)
+		{
+			HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_14);
+			time_current2 = HAL_GetTick();
+		}
+}
+void led_handle()
+{
+	switch(led_status)
+	{
+		case LED_OFF:
+			ledOff();
+		break;
+		
+		case LED1_BLINK_1HZ:
+			led1Blynk();
+		break;
+		
+		case LED2_BLINK_5HZ:
+			led2Blynk();
+		break;
+	}
+}
 
 /* USER CODE END 0 */
 
@@ -86,7 +190,7 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   /* USER CODE BEGIN 2 */
-
+LedStatus led_status = LED_OFF;
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -94,7 +198,8 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-
+		button_handle();
+		led_handle();
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */

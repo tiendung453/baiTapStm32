@@ -1,0 +1,23 @@
+--cpu Cortex-M3
+"button_controll_2led\startup_stm32f103xb.o"
+"button_controll_2led\main.o"
+"button_controll_2led\stm32f1xx_it.o"
+"button_controll_2led\stm32f1xx_hal_msp.o"
+"button_controll_2led\stm32f1xx_hal_gpio_ex.o"
+"button_controll_2led\stm32f1xx_hal_tim.o"
+"button_controll_2led\stm32f1xx_hal_tim_ex.o"
+"button_controll_2led\stm32f1xx_hal.o"
+"button_controll_2led\stm32f1xx_hal_rcc.o"
+"button_controll_2led\stm32f1xx_hal_rcc_ex.o"
+"button_controll_2led\stm32f1xx_hal_gpio.o"
+"button_controll_2led\stm32f1xx_hal_dma.o"
+"button_controll_2led\stm32f1xx_hal_cortex.o"
+"button_controll_2led\stm32f1xx_hal_pwr.o"
+"button_controll_2led\stm32f1xx_hal_flash.o"
+"button_controll_2led\stm32f1xx_hal_flash_ex.o"
+"button_controll_2led\stm32f1xx_hal_exti.o"
+"button_controll_2led\system_stm32f1xx.o"
+--strict --scatter "button_controll_2led\button_controll_2led.sct"
+--summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
+--info sizes --info totals --info unused --info veneers
+--list "button_controll_2led.map" -o button_controll_2led\button_controll_2led.axf
