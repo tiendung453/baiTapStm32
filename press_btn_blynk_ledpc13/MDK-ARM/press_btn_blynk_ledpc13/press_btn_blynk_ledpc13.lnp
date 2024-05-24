@@ -1,0 +1,23 @@
+--cpu Cortex-M3
+"press_btn_blynk_ledpc13\startup_stm32f103xb.o"
+"press_btn_blynk_ledpc13\main.o"
+"press_btn_blynk_ledpc13\stm32f1xx_it.o"
+"press_btn_blynk_ledpc13\stm32f1xx_hal_msp.o"
+"press_btn_blynk_ledpc13\stm32f1xx_hal_gpio_ex.o"
+"press_btn_blynk_ledpc13\stm32f1xx_hal_tim.o"
+"press_btn_blynk_ledpc13\stm32f1xx_hal_tim_ex.o"
+"press_btn_blynk_ledpc13\stm32f1xx_hal.o"
+"press_btn_blynk_ledpc13\stm32f1xx_hal_rcc.o"
+"press_btn_blynk_ledpc13\stm32f1xx_hal_rcc_ex.o"
+"press_btn_blynk_ledpc13\stm32f1xx_hal_gpio.o"
+"press_btn_blynk_ledpc13\stm32f1xx_hal_dma.o"
+"press_btn_blynk_ledpc13\stm32f1xx_hal_cortex.o"
+"press_btn_blynk_ledpc13\stm32f1xx_hal_pwr.o"
+"press_btn_blynk_ledpc13\stm32f1xx_hal_flash.o"
+"press_btn_blynk_ledpc13\stm32f1xx_hal_flash_ex.o"
+"press_btn_blynk_ledpc13\stm32f1xx_hal_exti.o"
+"press_btn_blynk_ledpc13\system_stm32f1xx.o"
+--strict --scatter "press_btn_blynk_ledpc13\press_btn_blynk_ledpc13.sct"
+--summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
+--info sizes --info totals --info unused --info veneers
+--list "press_btn_blynk_ledpc13.map" -o press_btn_blynk_ledpc13\press_btn_blynk_ledpc13.axf
