@@ -17,6 +17,7 @@
 "button_controll_2led\stm32f1xx_hal_flash_ex.o"
 "button_controll_2led\stm32f1xx_hal_exti.o"
 "button_controll_2led\system_stm32f1xx.o"
+"button_controll_2led\button.o"
 --strict --scatter "button_controll_2led\button_controll_2led.sct"
 --summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers

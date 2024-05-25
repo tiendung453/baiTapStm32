@@ -21,7 +21,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "button.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -42,7 +42,6 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -54,109 +53,75 @@ static void MX_GPIO_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-uint8_t btn_current = 1;
-uint8_t btn_last = 1;
-uint8_t btn_filter = 1;
-uint8_t is_debouncing = 0;
-uint32_t time_debounce;
-uint32_t time_current1;
-uint32_t time_current2;
+Button_Typedef button1;
+Button_Typedef button2;
+typedef enum {
+    LED_OFF,
+    LED1_BLINK_1HZ,
+    LED2_BLINK_5HZ,
+} LedStatus;
 
-uint8_t test;
-uint8_t count = 0;
+LedStatus led_status = LED_OFF;
 
-typedef enum
-{
-	LED_OFF,
-	LED1_BLINK_1HZ,
-	LED2_BLINK_5HZ,
-}LedStatus;
-
-LedStatus led_status;
-
-void btn_pressing_callback()
-{
-	switch(led_status)
+void btn_pressing_callback(GPIO_TypeDef *GPIOx, uint16_t GPIO_Pin) {
+  if(GPIOx == GPIOA && GPIO_Pin == GPIO_PIN_0)
 	{
-		case LED_OFF:
-			led_status = LED1_BLINK_1HZ;
-		break;
-		
-		case LED1_BLINK_1HZ:
-			led_status = LED2_BLINK_5HZ;
-		break;
-		
-		case LED2_BLINK_5HZ:
-			led_status = LED_OFF;
-		break;
-			
-	}
-}
-
-void button_handle()
-{
-	uint8_t sta = HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_0);
-	if(sta != btn_filter)
-	{
-		btn_filter = sta;
-		is_debouncing = 1;
-		time_debounce = HAL_GetTick();
-	}
-	if(is_debouncing && (HAL_GetTick()-time_debounce >= 15))
-	{
-		btn_current = btn_filter;
-		is_debouncing = 0;
-	}
-	// ----------- xu li-----------
-	if(btn_current != btn_last)
-	{
-		if(btn_current == 0)
+		switch (led_status) 
 		{
-			btn_pressing_callback();
-		}
-		btn_last = btn_current;
+        case LED_OFF:
+            led_status = LED1_BLINK_1HZ;
+            break;
+        case LED1_BLINK_1HZ:
+            led_status = LED2_BLINK_5HZ;
+            break;
+        case LED2_BLINK_5HZ:
+            led_status = LED_OFF;
+            break;
+        default:
+            break;
+    }
 	}
 }
-// ------ xu li led-------
-void ledOff()
-{
-	HAL_GPIO_WritePin(GPIOC, GPIO_PIN_13, 1);
-	HAL_GPIO_WritePin(GPIOC, GPIO_PIN_14, 0);
+
+// ------ xu lý led -------
+void ledOff() {
+    HAL_GPIO_WritePin(GPIOC, GPIO_PIN_13, 1);
+    HAL_GPIO_WritePin(GPIOC, GPIO_PIN_14, 0);
 }
 
-void led1Blynk()
-{
-		if(HAL_GetTick() - time_current1 >= 500)
-		{
-			HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_13);
-			time_current1 = HAL_GetTick();
-		}
+void led1Blynk() {
+    static uint32_t time_current1;
+    if (HAL_GetTick() - time_current1 >= 500) {
+        HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_13);
+        time_current1 = HAL_GetTick();
+    }
 }
 
-void led2Blynk()
-{
-		if(HAL_GetTick() - time_current2 >= 100)
-		{
-			HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_14);
-			time_current2 = HAL_GetTick();
-		}
+void led2Blynk() {
+    static uint32_t time_current2;
+    if (HAL_GetTick() - time_current2 >= 100) {
+        HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_14);
+        time_current2 = HAL_GetTick();
+    }
 }
-void led_handle()
-{
-	switch(led_status)
-	{
-		case LED_OFF:
-			ledOff();
-		break;
-		
-		case LED1_BLINK_1HZ:
-			led1Blynk();
-		break;
-		
-		case LED2_BLINK_5HZ:
-			led2Blynk();
-		break;
-	}
+
+void led_handle() {
+    switch (led_status) {
+        case LED_OFF:
+            ledOff();
+            break;
+
+        case LED1_BLINK_1HZ:
+            led1Blynk();
+            break;
+
+        case LED2_BLINK_5HZ:
+            led2Blynk();
+            break;
+
+        default:
+            break;
+    }
 }
 
 /* USER CODE END 0 */
@@ -190,18 +155,20 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   /* USER CODE BEGIN 2 */
-LedStatus led_status = LED_OFF;
+		button_init(&button1, GPIOA, GPIO_PIN_0);
+		button_init(&button2, GPIOA, GPIO_PIN_1);
+		//led_status = LED_OFF;
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  while (1)
-  {
+    while (1) {
     /* USER CODE END WHILE */
-		button_handle();
+		button_handle(&button1);
 		led_handle();
     /* USER CODE BEGIN 3 */
-  }
+    }
   /* USER CODE END 3 */
 }
 
@@ -267,8 +234,8 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
-  /*Configure GPIO pin : PA0 */
-  GPIO_InitStruct.Pin = GPIO_PIN_0;
+  /*Configure GPIO pins : PA0 PA1 */
+  GPIO_InitStruct.Pin = GPIO_PIN_0|GPIO_PIN_1;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_PULLUP;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
@@ -288,11 +255,10 @@ static void MX_GPIO_Init(void)
 void Error_Handler(void)
 {
   /* USER CODE BEGIN Error_Handler_Debug */
-  /* User can add his own implementation to report the HAL error return state */
-  __disable_irq();
-  while (1)
-  {
-  }
+    /* Ngu?i dùng có th? thêm ph?n tri?n khai c?a mình d? báo cáo tr?ng thái l?i HAL */
+    __disable_irq();
+    while (1) {
+    }
   /* USER CODE END Error_Handler_Debug */
 }
 
@@ -307,8 +273,8 @@ void Error_Handler(void)
 void assert_failed(uint8_t *file, uint32_t line)
 {
   /* USER CODE BEGIN 6 */
-  /* User can add his own implementation to report the file name and line number,
-     ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
+    /* Ngu?i dùng có th? thêm ph?n tri?n khai c?a mình d? báo cáo tên t?p và s? dòng,
+       ví d?: printf("Thông s? sai: t?p %s trên dòng %d\r\n", file, line) */
   /* USER CODE END 6 */
 }
 #endif /* USE_FULL_ASSERT */
