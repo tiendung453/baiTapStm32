@@ -1,0 +1,25 @@
+--cpu Cortex-M3
+"mma8452\startup_stm32f103xb.o"
+"mma8452\main.o"
+"mma8452\stm32f1xx_it.o"
+"mma8452\stm32f1xx_hal_msp.o"
+"mma8452\mma8452q.o"
+"mma8452\stm32f1xx_hal_gpio_ex.o"
+"mma8452\stm32f1xx_hal_i2c.o"
+"mma8452\stm32f1xx_hal.o"
+"mma8452\stm32f1xx_hal_rcc.o"
+"mma8452\stm32f1xx_hal_rcc_ex.o"
+"mma8452\stm32f1xx_hal_gpio.o"
+"mma8452\stm32f1xx_hal_dma.o"
+"mma8452\stm32f1xx_hal_cortex.o"
+"mma8452\stm32f1xx_hal_pwr.o"
+"mma8452\stm32f1xx_hal_flash.o"
+"mma8452\stm32f1xx_hal_flash_ex.o"
+"mma8452\stm32f1xx_hal_exti.o"
+"mma8452\stm32f1xx_hal_tim.o"
+"mma8452\stm32f1xx_hal_tim_ex.o"
+"mma8452\system_stm32f1xx.o"
+--strict --scatter "MMA8452\MMA8452.sct"
+--summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
+--info sizes --info totals --info unused --info veneers
+--list "MMA8452.map" -o MMA8452\MMA8452.axf
