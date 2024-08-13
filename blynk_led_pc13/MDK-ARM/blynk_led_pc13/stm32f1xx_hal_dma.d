@@ -8,9 +8,9 @@ blynk_led_pc13/stm32f1xx_hal_dma.o: \
   ..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f103xb.h \
   ..\Drivers\CMSIS\Include\core_cm3.h \
   C:\Keil_v5\ARM\ARMCLANG\include\stdint.h \
-  F:\STM32\blynk_led_pc13\Drivers\CMSIS\Include\cmsis_version.h \
-  F:\STM32\blynk_led_pc13\Drivers\CMSIS\Include\cmsis_compiler.h \
-  F:\STM32\blynk_led_pc13\Drivers\CMSIS\Include\cmsis_armclang.h \
+  F:\STM32F103_Practice\blynk_led_pc13\Drivers\CMSIS\Include\cmsis_version.h \
+  F:\STM32F103_Practice\blynk_led_pc13\Drivers\CMSIS\Include\cmsis_compiler.h \
+  F:\STM32F103_Practice\blynk_led_pc13\Drivers\CMSIS\Include\cmsis_armclang.h \
   C:\Keil_v5\ARM\ARMCLANG\include\arm_compat.h \
   C:\Keil_v5\ARM\ARMCLANG\include\arm_acle.h \
   ..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\system_stm32f1xx.h \
